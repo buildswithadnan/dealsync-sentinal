@@ -122,17 +122,9 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {statCards.map((card, index) => {
             const Icon = card.icon;
-            const CardWrapper = card.link ? Link : 'div';
-            const cardProps = card.link ? { href: card.link } : {};
 
-            return (
-              <CardWrapper
-                key={index}
-                {...cardProps}
-                className={`bg-white rounded-lg shadow p-6 ${
-                  card.link ? 'cursor-pointer hover:shadow-lg transition-shadow' : ''
-                }`}
-              >
+            const cardContent = (
+              <>
                 <div className="flex items-center justify-between mb-4">
                   <div className={`p-3 rounded-lg ${card.bgColor}`}>
                     <Icon className={`w-6 h-6 ${card.color}`} />
@@ -146,7 +138,28 @@ export default function Dashboard() {
                   {typeof card.value === 'number' ? card.value.toLocaleString() : card.value}
                 </p>
                 <p className="text-xs text-gray-500">{card.trend}</p>
-              </CardWrapper>
+              </>
+            );
+
+            if (card.link) {
+              return (
+                <Link
+                  key={index}
+                  href={card.link}
+                  className="bg-white rounded-lg shadow p-6 cursor-pointer hover:shadow-lg transition-shadow"
+                >
+                  {cardContent}
+                </Link>
+              );
+            }
+
+            return (
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow p-6"
+              >
+                {cardContent}
+              </div>
             );
           })}
         </div>
